@@ -1,0 +1,4 @@
+crewai
+beautifulsoup4
+pandas
+markdown2
