@@ -8,7 +8,6 @@ from urllib.request import Request, urlopen
 import re
 import pandas as pd
 from typing import List, Dict
-
 from mail import send_email
 
 logging.basicConfig(
@@ -21,6 +20,8 @@ llm = LLM(
     model="ollama/llama3.2:latest",
     base_url="http://localhost:11434"
 )
+
+# Crawler Tool with integrated cleaning
 class CompetitorCrawler(BaseTool):
     """Tool to crawl and clean product data from Levi's Korea, Lee Korea, and Calvin Klein Korea."""
     name: str = "Crawl Competitor Data"
@@ -135,7 +136,16 @@ class CompetitorCrawler(BaseTool):
 
         return all_products
 
-# Agents
+# Define Agents
+
+orchestrator_agent = Agent(
+    role="Workflow Orchestrator",
+    goal="Coordinate and optimize the end-to-end competitor analysis workflow",
+    backstory="Senior project manager with expertise in data operations and workflow optimization. Ensures smooth execution and handles any issues between crawling, analysis, and reporting stages.",
+    verbose=True,
+    llm=llm
+)
+
 crawler_agent = Agent(
     role="Web Crawler",
     goal="Extract and clean product information from Levi's Korea, Lee Korea, and Calvin Klein Korea websites",
@@ -161,7 +171,7 @@ reporting_agent = Agent(
     llm=llm
 )
 
-# Tasks
+# Define Tasks
 crawl_task = Task(
     description="Crawl Levi's Korea, Lee Korea, and Calvin Klein Korea websites to extract and clean product information including names, prices, and promotions",
     agent=crawler_agent,
@@ -212,7 +222,9 @@ def run_competitor_analysis():
     crew = Crew(
         agents=[crawler_agent, analyzer_agent, reporting_agent],
         tasks=[crawl_task, analyze_task, report_task],
-        verbose=True
+        verbose=True,
+        process='hierarchical',
+        manager_agent=orchestrator_agent
     )
 
     result = crew.kickoff()
@@ -250,7 +262,7 @@ def run_competitor_analysis():
 
         else:
             logging.warning("Result format unexpected, saving raw output")
-            with open("competitor_analysis_raw.txt", "w") as f:
+            with open("competitor_analysis_raw.md", "w") as f:
                 f.write(str(result))
 
         print("\n=== Analysis & Reporting Complete ===")
