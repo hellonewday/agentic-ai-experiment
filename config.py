@@ -6,14 +6,12 @@ import pdfkit
 
 load_dotenv()
 
-# Logging configuration
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
     filename="competitor_crawler.log"
 )
 
-# Constants
 REPORT_DIR = "reports"
 if not os.path.exists(REPORT_DIR):
     os.makedirs(REPORT_DIR)
@@ -21,8 +19,8 @@ if not os.path.exists(REPORT_DIR):
 EMAIL_SENDER = "Levis Data Team <hungnq.11198@gmail.com>"
 EMAIL_RECEIVER = "Levis Staff <staff@levis.co.kr>"
 EMAIL_SUBJECT = "Levi’s Promotion Campaign Insights - Weekly Report"
-SMTP_USER = os.getenv("SMTP_USER")
-SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
+SMTP_USER = "07e58258e03ad3"
+SMTP_PASSWORD = "28bb032eaf39f5"
 
 # wkhtmltopdf configuration for Windows - Comment this when running on Ubuntu
 # path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'

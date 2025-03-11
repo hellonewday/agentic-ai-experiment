@@ -1,47 +1,125 @@
-import logging
+import re
 import streamlit as st
-from streamlit.components.v1 import html
+from markdown import markdown
 import pdfkit
-from config import CONFIG
-import base64
-import markdown
-
-class StreamlitLogHandler(logging.Handler):
-    """Custom handler to stream logs to Streamlit."""
-    def __init__(self, streamlit_container):
-        super().__init__()
-        self.container = streamlit_container
-        self.logs = []
-
-    def emit(self, record):
-        log_entry = self.format(record)
-        self.logs.append(log_entry)
-        self.container.text_area("CrewAI Reasoning", "\n".join(self.logs), height=300)
+import json
 
 def show_confetti():
-    """Display confetti animation on success."""
-    confetti_code = """
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script>
-        setTimeout(() => {
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 }
-            });
-        }, 500);
-    </script>
-    """
-    html(confetti_code)
+    st.balloons()
 
-def markdown_to_pdf(markdown_content, output_path):
-    """Convert Markdown to PDF."""
-    pdfkit.from_string(markdown.markdown(markdown_content, extensions=['markdown.extensions.tables']), output_path, configuration=CONFIG)
+def markdown_to_pdf(markdown_text, output_path):
+    html_text = markdown(markdown_text)
+    pdfkit.from_string(html_text, output_path)
 
-def get_pdf_download_link(file_path, filename):
-    """Generate a downloadable PDF link."""
-    with open(file_path, "rb") as f:
+def get_pdf_download_link(pdf_path, filename):
+    with open(pdf_path, "rb") as f:
         pdf_data = f.read()
-    b64 = base64.b64encode(pdf_data).decode()
-    href = f'<a href="data:application/pdf;base64,{b64}" download="{filename}">Download PDF</a>'
-    return href
+    return st.download_button(
+        label="Download PDF",
+        data=pdf_data,
+        file_name=filename,
+        mime="application/pdf",
+    )
+
+class StreamToExpander:
+    def __init__(self, expander, st):
+        self.expander = expander
+        self.st = st
+        self.buffer = []
+        self.logs = []
+        self.colors = {'task': '#388E3C', 'agent': '#1565C0', 'tool': '#FF8F00', 'completion': '#2E7D32'}
+
+    def write(self, data):
+        cleaned_data = re.sub(r'\x1B\[[0-9;]*[mK]', '', data)
+
+        task_match = re.search(r'Task:\s*(.*)', cleaned_data)
+        if task_match:
+            task_value = task_match.group(1).strip()
+            self.st.toast(":robot_face: " + task_value)
+
+        # Buffer the data
+        self.buffer.append(cleaned_data)
+        if "\n" in data:
+            log_entry = ''.join(self.buffer).strip()
+            if not re.search(r'[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}', log_entry):
+                formatted_log = self.format_log(log_entry)
+                if formatted_log:
+                    self.logs.append(formatted_log)
+                    self.expander.markdown(
+                        '<div class="log-container">' + ''.join(self.logs) + '</div>',
+                        unsafe_allow_html=True
+                    )
+            self.buffer = []
+
+    def flush(self):
+        pass 
+
+    def get_logs(self):
+        return '<div class="log-container">' + ''.join(self.logs) + '</div>'
+
+    def format_log(self, log_entry):
+        log_entry_normalized = log_entry.title()
+        
+
+        if "[📋 TASK STARTED:" in log_entry:
+            task = log_entry_normalized.split("Task Started:")[1].split("]")[0].strip()
+            return f'<div class="log-entry fade-in" style="color: {self.colors["task"]};">📋 {self.wrap_text(task)}</div>'
+        elif "[🤖 AGENT" in log_entry and "STARTED TASK" in log_entry:
+            agent = log_entry_normalized.split("'")[1]
+            return f'<div class="log-entry fade-in" style="color: {self.colors["agent"]};">🤖 {agent} Started</div>'
+        elif "Task:" in log_entry:
+            task = log_entry_normalized.replace("Task:", "").strip()
+            return f'<div class="log-entry fade-in" style="color: {self.colors["task"]};">📋 {self.wrap_text(task)}</div>'
+        elif "[🛠️ TOOL USAGE STARTED:" in log_entry:
+            tool = log_entry_normalized.split("'")[1]
+            return f'<div class="log-entry fade-in" style="color: {self.colors["tool"]};">🛠️ {tool} Started</div>'
+        elif "[✅ TOOL USAGE FINISHED:" in log_entry:
+            tool = log_entry_normalized.split("'")[1]
+            return f'<div class="log-entry fade-in" style="color: {self.colors["tool"]};">✅ {tool} Finished</div>'
+        elif "Tool Input:" in log_entry:
+            input_data = log_entry_normalized.replace("Tool Input:", "").strip()
+            formatted_input = self.prettify_json(input_data)
+            return f'<div class="log-entry fade-in" style="color: {self.colors["tool"]};">🔍 Input: {formatted_input}</div>'
+        elif "Tool Output:" in log_entry:
+            output = log_entry_normalized.replace("Tool Output:", "").strip()
+            formatted_output = self.prettify_json(output)
+            return f'<div class="log-entry fade-in" style="color: {self.colors["tool"]};">📦 Output: {formatted_output}</div>'
+        elif "Final Answer:" in log_entry:
+            answer = log_entry_normalized.replace("Final Answer:", "").strip()
+            formatted_answer = self.prettify_json(answer)
+            return f'<div class="log-entry fade-in" style="color: {self.colors["completion"]};">🎯 {formatted_answer}</div>'
+        elif "[✅ TASK COMPLETED:" in log_entry:
+            task = log_entry_normalized.split("Completed:")[1].split("]")[0].strip()
+            return f'<div class="log-entry fade-in" style="color: {self.colors["completion"]};">✅ {self.wrap_text(task)}</div>'
+        elif "[✅ CREW 'CREW' COMPLETED" in log_entry:
+            return f'<div class="log-entry fade-in" style="color: {self.colors["completion"]};">✅ Process Completed</div>'
+        return None 
+
+    def wrap_text(self, text, max_length=50):
+        """Wrap long text into multiple lines for readability."""
+        words = text.split()
+        lines = []
+        current_line = []
+        current_length = 0
+
+        for word in words:
+            if current_length + len(word) + 1 <= max_length:
+                current_line.append(word)
+                current_length += len(word) + 1
+            else:
+                lines.append(" ".join(current_line))
+                current_line = [word]
+                current_length = len(word) + 1
+        if current_line:
+            lines.append(" ".join(current_line))
+        return " ".join(lines)
+
+    def prettify_json(self, text):
+        try:
+            if text.strip().startswith(('{', '[')):
+                json_data = json.loads(text)
+                pretty_json = json.dumps(json_data, indent=2, ensure_ascii=False)
+                return f'<pre style="margin: 0; padding: 5px; background-color: #f5f5f5; border-radius: 4px;">{pretty_json}</pre>'
+            return text
+        except json.JSONDecodeError:
+            return text

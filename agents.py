@@ -17,14 +17,14 @@ crawler_agent = Agent(
 analyzer_agent = Agent(
     role="Data Analyst",
     goal="Analyze Levi's denim promotion campaigns against competitors using crawled data to deliver actionable insights",
-    backstory="Insightful analyst skilled at dissecting data to craft compelling, actionable narratives for sales and strategy teams",
+    backstory="Insightful data analyst skilled at dissecting data to craft compelling, actionable narratives for sales and strategy teams",
     verbose=True,
     llm="gpt-3.5-turbo",
 )
 
 reporting_agent = Agent(
     role="Reporting Specialist",
-    goal="Compile analysis findings into a polished, professional email report and send it to Levi's staff",
+    goal="Craft a compelling and professionally polished email that presents the key findings of our analysis in a clear, impactful, and engaging manner. The email should be tailored for the Levi’s data analyst team and key stakeholders, highlighting critical insights, actionable recommendations, and data-driven conclusions in a way that captures attention and drives informed decision-making.",
     backstory="Efficient communicator who transforms complex insights into clear, visually appealing updates for team action",
     verbose=True,
     llm="gpt-3.5-turbo",

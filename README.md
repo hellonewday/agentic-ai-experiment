@@ -18,7 +18,7 @@ vs_buildtools.exe --norestart --passive --downloadThenInstall --includeRecommend
 
 5. Setup `STMP_USER` và `SMTP_PASSWORD` ở `.env` là credentials trong Mailtrap
 
-6. Chạy full giao diện `streamlit run app.py`
+6. Chạy full giao diện `python3 -m streamlit run app.py`
 
 Xem giao diện ở `localhost:8501`
 
