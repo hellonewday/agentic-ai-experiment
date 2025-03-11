@@ -1,0 +1,29 @@
+2025-03-11 13:08:42,627 - INFO - Starting new competitor analysis run
+2025-03-11 13:08:42,641 - INFO - 
+LiteLLM completion() model= gpt-3.5-turbo; provider = openai
+2025-03-11 13:08:43,796 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-11 13:08:43,819 - INFO - Wrapper: Completed Call, calling success_handler
+2025-03-11 13:08:49,848 - INFO - Successfully fetched Levi's Korea data
+2025-03-11 13:08:52,437 - INFO - Successfully fetched Lee Korea page 1
+2025-03-11 13:08:54,997 - INFO - Successfully fetched Lee Korea page 2
+2025-03-11 13:08:57,673 - INFO - Successfully fetched Lee Korea page 3
+2025-03-11 13:09:00,890 - INFO - Successfully fetched Calvin Klein Korea data
+2025-03-11 13:09:00,952 - INFO - Saved 188 cleaned products to cleaned_products.csv
+2025-03-11 13:09:00,955 - INFO - 
+LiteLLM completion() model= gpt-3.5-turbo; provider = openai
+2025-03-11 13:09:48,854 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-11 13:09:49,035 - INFO - Wrapper: Completed Call, calling success_handler
+2025-03-11 13:09:49,044 - INFO - 
+LiteLLM completion() model= gpt-3.5-turbo; provider = openai
+2025-03-11 13:09:55,383 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-11 13:09:55,389 - INFO - Wrapper: Completed Call, calling success_handler
+2025-03-11 13:09:55,397 - INFO - 
+LiteLLM completion() model= gpt-3.5-turbo; provider = openai
+2025-03-11 13:09:59,236 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-11 13:09:59,244 - INFO - Wrapper: Completed Call, calling success_handler
+2025-03-11 13:09:59,269 - INFO - Converting Markdown content to HTML
+2025-03-11 13:09:59,302 - INFO - Creating email message
+2025-03-11 13:09:59,302 - INFO - Connecting to SMTP server
+2025-03-11 13:10:01,033 - INFO - Logging in to SMTP server
+2025-03-11 13:10:02,442 - ERROR - Failed to send email: (500, b'5.5.1 Invalid command')
+2025-03-11 13:10:02,442 - ERROR - Error processing results or sending email: (500, b'5.5.1 Invalid command')

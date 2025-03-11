@@ -10,13 +10,13 @@ vs_buildtools.exe --norestart --passive --downloadThenInstall --includeRecommend
 
 ```pip install -r requirements.txt```
 
-3. Thêm OpenAI Key vào `agents.py` line 6 
+3. Thêm OpenAI Key vào `.env` 
 
 4. Cài `wkhtmltopdf` để generate ra PDF 
 - Windows: Tải file installer, cài đặt và thêm file vào PATH và uncomment dòng 25-26 trong config.py
 - Linux: `sudo apt install wkhtmltopdf`
 
-5. Setup `STMP_USER` và `SMTP_PASSWORD` ở `config.py` là credentials trong Mailtrap
+5. Setup `STMP_USER` và `SMTP_PASSWORD` ở `.env` là credentials trong Mailtrap
 
 6. Chạy full giao diện `streamlit run app.py`
 

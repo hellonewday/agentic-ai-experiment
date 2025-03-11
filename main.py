@@ -51,7 +51,7 @@ def run_competitor_analysis():
         print("Check:\n- reports/competitor_analysis_<timestamp>.md (narrative)\n- email_report.log (email log)\n- Your Mailtrap inbox")
     except Exception as e:
         logging.error(f"Error processing results or sending email: {str(e)}")
-        print(f"Error: {e}")
+        print(f"Error processing results or sending email: {e}")
 
 if __name__ == "__main__":
     print("Starting competitor product analysis...")

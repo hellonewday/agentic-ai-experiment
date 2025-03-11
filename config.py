@@ -1,7 +1,10 @@
 import logging
 from datetime import datetime
+from dotenv import load_dotenv
 import os
 import pdfkit
+
+load_dotenv()
 
 # Logging configuration
 logging.basicConfig(
@@ -18,8 +21,8 @@ if not os.path.exists(REPORT_DIR):
 EMAIL_SENDER = "Levis Data Team <hungnq.11198@gmail.com>"
 EMAIL_RECEIVER = "Levis Staff <staff@levis.co.kr>"
 EMAIL_SUBJECT = "Levi’s Promotion Campaign Insights - Weekly Report"
-SMTP_USER = "07e58258e03ad3"
-SMTP_PASSWORD = "28bb032eaf39f5"
+SMTP_USER = os.getenv("SMTP_USER")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
 
 # wkhtmltopdf configuration for Windows - Comment this when running on Ubuntu
 # path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
