@@ -1,3 +1,6 @@
 /poc-env
 __pycache__
 /reports
+.env
+cleaned_products.csv
+competitors_crawler.log

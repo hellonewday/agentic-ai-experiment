@@ -18,12 +18,12 @@ if not os.path.exists(REPORT_DIR):
 EMAIL_SENDER = "Levis Data Team <hungnq.11198@gmail.com>"
 EMAIL_RECEIVER = "Levis Staff <staff@levis.co.kr>"
 EMAIL_SUBJECT = "Levi’s Promotion Campaign Insights - Weekly Report"
-SMTP_USER = ""
-SMTP_PASSWORD = ""
+SMTP_USER = "07e58258e03ad3"
+SMTP_PASSWORD = "28bb032eaf39f5"
 
-# wkhtmltopdf configuration for Windows
-path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
-CONFIG = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
+# wkhtmltopdf configuration for Windows - Comment this when running on Ubuntu
+# path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+# CONFIG = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
 
 def get_unique_report_filename():
     return f"{REPORT_DIR}/competitor_analysis_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"

@@ -4,7 +4,7 @@ from crewai import Crew
 from agents import crawler_agent, analyzer_agent, reporting_agent
 from tasks import crawl_task, analyze_task, report_task
 from email_sender import send_email
-
+from config import SMTP_USER, SMTP_PASSWORD
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
@@ -44,10 +44,8 @@ def run_competitor_analysis():
         sender = "Levis Data Team <hungnq.11198@gmail.com>"
         receiver = "Levis Staff <staff@levis.co.kr>"
         subject = "Levi’s Promotion Campaign Insights - Weekly Report"
-        smtp_user = "07e58258e03ad3"
-        smtp_password = "28bb032eaf39f5"
 
-        send_email(sender, receiver, subject, email_body, smtp_user, smtp_password)
+        send_email(sender, receiver, subject, email_body, SMTP_USER, SMTP_PASSWORD)
 
         print("\n=== Analysis & Reporting Complete ===")
         print("Check:\n- reports/competitor_analysis_<timestamp>.md (narrative)\n- email_report.log (email log)\n- Your Mailtrap inbox")
