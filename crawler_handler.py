@@ -3,7 +3,7 @@ from agents import crawler_agent, analyzer_agent, reporting_agent
 from tasks import crawl_task, analyze_task, report_task
 from email_sender import send_email
 import time
-from config import get_unique_report_filename
+from config import get_unique_report_filename, EMAIL_SENDER, EMAIL_RECEIVER, EMAIL_SUBJECT, SMTP_USER, SMTP_PASSWORD
 
 def run_analysis():
     """Run the competitor analysis workflow."""
@@ -36,5 +36,5 @@ def run_analysis():
         f"{full_analysis}"
     )
 
-    send_email(config.EMAIL_SENDER, config.EMAIL_RECEIVER, config.EMAIL_SUBJECT, email_body, config.SMTP_USER, config.SMTP_PASSWORD)
+    send_email(EMAIL_SENDER, EMAIL_RECEIVER, EMAIL_SUBJECT, email_body, SMTP_USER, SMTP_PASSWORD)
     return analyze_task.output_file

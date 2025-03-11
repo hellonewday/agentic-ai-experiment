@@ -185,3 +185,97 @@ LiteLLM completion() model= llama3.2:latest; provider = ollama
 2025-03-11 10:56:07,592 - INFO - Sending email to Levis Staff <staff@levis.co.kr>
 2025-03-11 10:56:07,606 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
 2025-03-11 10:56:09,910 - INFO - Email sent successfully
+2025-03-11 11:16:56,955 - INFO - HTTP Request: GET https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json "HTTP/1.1 200 OK"
+2025-03-11 11:17:23,108 - INFO - 
+LiteLLM completion() model= llama3.2:latest; provider = ollama
+2025-03-11 11:17:29,178 - INFO - HTTP Request: POST http://localhost:11434/api/generate "HTTP/1.1 200 OK"
+2025-03-11 11:17:29,180 - INFO - Wrapper: Completed Call, calling success_handler
+2025-03-11 11:17:31,268 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:17:31,274 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:17:31,338 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:17:32,184 - INFO - Successfully fetched Levi's Korea data
+2025-03-11 11:17:33,453 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:17:33,968 - INFO - Successfully fetched Lee Korea page 1
+2025-03-11 11:17:35,621 - INFO - Successfully fetched Lee Korea page 2
+2025-03-11 11:17:37,239 - INFO - Successfully fetched Lee Korea page 3
+2025-03-11 11:17:40,109 - INFO - Successfully fetched Calvin Klein Korea data
+2025-03-11 11:17:40,162 - INFO - Saved 188 cleaned products to cleaned_products.csv
+2025-03-11 11:17:40,172 - INFO - 
+LiteLLM completion() model= llama3.2:latest; provider = ollama
+2025-03-11 11:17:50,684 - INFO - HTTP Request: POST http://localhost:11434/api/generate "HTTP/1.1 200 OK"
+2025-03-11 11:17:50,689 - INFO - Wrapper: Completed Call, calling success_handler
+2025-03-11 11:17:50,692 - INFO - 
+LiteLLM completion() model= llama3.2:latest; provider = ollama
+2025-03-11 11:17:52,787 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:17:53,189 - INFO - HTTP Request: POST http://localhost:11434/api/generate "HTTP/1.1 200 OK"
+2025-03-11 11:17:53,195 - INFO - Wrapper: Completed Call, calling success_handler
+2025-03-11 11:17:53,214 - INFO - 
+LiteLLM completion() model= llama3.2:latest; provider = ollama
+2025-03-11 11:17:54,856 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:17:55,238 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:17:57,273 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:18:05,614 - INFO - HTTP Request: POST http://localhost:11434/api/generate "HTTP/1.1 200 OK"
+2025-03-11 11:18:05,616 - INFO - Wrapper: Completed Call, calling success_handler
+2025-03-11 11:18:05,640 - INFO - 
+LiteLLM completion() model= llama3.2:latest; provider = ollama
+2025-03-11 11:18:07,679 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:18:09,772 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:18:22,159 - INFO - HTTP Request: POST http://localhost:11434/api/generate "HTTP/1.1 200 OK"
+2025-03-11 11:18:22,161 - INFO - Wrapper: Completed Call, calling success_handler
+2025-03-11 11:18:22,183 - ERROR - Error during analysis: name 'config' is not defined
+2025-03-11 11:18:24,232 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:18:24,262 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:20:43,196 - INFO - 
+LiteLLM completion() model= llama3.2:latest; provider = ollama
+2025-03-11 11:20:46,709 - INFO - HTTP Request: POST http://localhost:11434/api/generate "HTTP/1.1 200 OK"
+2025-03-11 11:20:46,711 - INFO - Wrapper: Completed Call, calling success_handler
+2025-03-11 11:20:46,713 - INFO - 
+LiteLLM completion() model= llama3.2:latest; provider = ollama
+2025-03-11 11:20:47,834 - INFO - HTTP Request: POST http://localhost:11434/api/generate "HTTP/1.1 200 OK"
+2025-03-11 11:20:47,837 - INFO - Wrapper: Completed Call, calling success_handler
+2025-03-11 11:20:48,243 - INFO - Successfully fetched Levi's Korea data
+2025-03-11 11:20:48,781 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:20:49,833 - INFO - Successfully fetched Lee Korea page 1
+2025-03-11 11:20:49,895 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:20:50,876 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:20:51,353 - INFO - Successfully fetched Lee Korea page 2
+2025-03-11 11:20:51,954 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:20:52,837 - INFO - Successfully fetched Lee Korea page 3
+2025-03-11 11:20:55,491 - INFO - Successfully fetched Calvin Klein Korea data
+2025-03-11 11:20:55,514 - INFO - Saved 188 cleaned products to cleaned_products.csv
+2025-03-11 11:20:55,521 - INFO - 
+LiteLLM completion() model= llama3.2:latest; provider = ollama
+2025-03-11 11:21:05,845 - INFO - HTTP Request: POST http://localhost:11434/api/generate "HTTP/1.1 200 OK"
+2025-03-11 11:21:05,851 - INFO - Wrapper: Completed Call, calling success_handler
+2025-03-11 11:21:05,854 - INFO - 
+LiteLLM completion() model= llama3.2:latest; provider = ollama
+2025-03-11 11:21:07,921 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:21:09,452 - INFO - HTTP Request: POST http://localhost:11434/api/generate "HTTP/1.1 200 OK"
+2025-03-11 11:21:09,458 - INFO - Wrapper: Completed Call, calling success_handler
+2025-03-11 11:21:09,473 - INFO - 
+LiteLLM completion() model= llama3.2:latest; provider = ollama
+2025-03-11 11:21:09,989 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:21:11,512 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:21:13,565 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:21:27,552 - INFO - HTTP Request: POST http://localhost:11434/api/generate "HTTP/1.1 200 OK"
+2025-03-11 11:21:27,553 - INFO - Wrapper: Completed Call, calling success_handler
+2025-03-11 11:21:27,555 - INFO - 
+LiteLLM completion() model= llama3.2:latest; provider = ollama
+2025-03-11 11:21:29,629 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:21:31,695 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:21:40,276 - INFO - HTTP Request: POST http://localhost:11434/api/generate "HTTP/1.1 200 OK"
+2025-03-11 11:21:40,278 - INFO - Wrapper: Completed Call, calling success_handler
+2025-03-11 11:21:40,296 - INFO - 
+LiteLLM completion() model= llama3.2:latest; provider = ollama
+2025-03-11 11:21:42,343 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:21:44,398 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:21:56,989 - INFO - HTTP Request: POST http://localhost:11434/api/generate "HTTP/1.1 200 OK"
+2025-03-11 11:21:56,991 - INFO - Wrapper: Completed Call, calling success_handler
+2025-03-11 11:21:57,016 - INFO - Converting Markdown content to HTML
+2025-03-11 11:21:57,021 - INFO - Creating email message
+2025-03-11 11:21:57,022 - INFO - Connecting to SMTP server
+2025-03-11 11:21:58,725 - INFO - Logging in to SMTP server
+2025-03-11 11:21:59,044 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
+2025-03-11 11:22:00,416 - ERROR - Failed to send email: Connection unexpectedly closed
+2025-03-11 11:22:00,417 - ERROR - Error during analysis: Connection unexpectedly closed
+2025-03-11 11:22:01,121 - INFO - HTTP Request: POST http://localhost:11434/api/show "HTTP/1.1 200 OK"
