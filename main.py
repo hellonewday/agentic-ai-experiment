@@ -1,10 +1,10 @@
+# main.py (temporary, will be replaced)
 import logging
 from crewai import Crew
 from agents import crawler_agent, analyzer_agent, reporting_agent
 from tasks import crawl_task, analyze_task, report_task
 from email_sender import send_email
 
-# Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
@@ -12,17 +12,15 @@ logging.basicConfig(
 )
 
 def run_competitor_analysis():
-    """Execute the competitor product crawling, analysis, and reporting workflow."""
     crew = Crew(
         agents=[crawler_agent, analyzer_agent, reporting_agent],
         tasks=[crawl_task, analyze_task, report_task],
         verbose=True
     )
-
     result = crew.kickoff()
 
     try:
-        with open("competitor_analysis.md", "r") as f:
+        with open(analyze_task.output_file, "r") as f:
             full_analysis = f.read()
 
         email_body = (
@@ -46,13 +44,13 @@ def run_competitor_analysis():
         sender = "Levis Data Team <hungnq.11198@gmail.com>"
         receiver = "Levis Staff <staff@levis.co.kr>"
         subject = "Levi’s Promotion Campaign Insights - Weekly Report"
-        smtp_user = ""  # Your Mailtrap SMTP username
-        smtp_password = ""  # Your Mailtrap SMTP password
+        smtp_user = "07e58258e03ad3"
+        smtp_password = "28bb032eaf39f5"
 
         send_email(sender, receiver, subject, email_body, smtp_user, smtp_password)
 
         print("\n=== Analysis & Reporting Complete ===")
-        print("Check:\n- competitor_analysis.md (narrative)\n- email_report.log (email log)\n- Your Mailtrap inbox")
+        print("Check:\n- reports/competitor_analysis_<timestamp>.md (narrative)\n- email_report.log (email log)\n- Your Mailtrap inbox")
     except Exception as e:
         logging.error(f"Error processing results or sending email: {str(e)}")
         print(f"Error: {e}")

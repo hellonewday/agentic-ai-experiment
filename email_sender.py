@@ -2,13 +2,13 @@ import smtplib
 import logging
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from markdown2 import markdown
+import markdown
 
 def send_email(sender: str, receiver: str, subject: str, content: str, smtp_user: str, smtp_password: str):
     """Send an email using Mailtrap SMTP with Markdown-formatted content."""
     try:
         logging.info("Converting Markdown content to HTML")
-        html_content = markdown(content)
+        html_content = markdown.markdown(content, extensions=['markdown.extensions.tables'])
 
         logging.info("Creating email message")
         msg = MIMEMultipart("alternative")

@@ -1,5 +1,16 @@
+# tasks.py
 from crewai import Task
 from agents import crawler_agent, analyzer_agent, reporting_agent
+from datetime import datetime
+import os
+
+# Ensure reports directory exists
+if not os.path.exists("reports"):
+    os.makedirs("reports")
+
+# Generate unique filename with timestamp
+timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+analysis_output_file = f"reports/competitor_analysis_{timestamp}.md"
 
 crawl_task = Task(
     description="Crawl Levi's Korea, Lee Korea, and Calvin Klein Korea websites to extract and clean product information including names, prices, and promotions",
@@ -21,7 +32,7 @@ analyze_task = Task(
     ),
     agent=analyzer_agent,
     expected_output=(
-        "A Markdown file ('competitor_analysis.md') with:\n"
+        f"A Markdown file ('{analysis_output_file}') with:\n"
         "   - Executive Summary: 3-4 sentences framing Levi’s promotion landscape with urgency.\n"
         "   - Pricing Snapshot: Data-driven overview of price positioning.\n"
         "   - Promotion Breakdown: Detailed analysis of campaign frequency and depth.\n"
@@ -30,12 +41,12 @@ analyze_task = Task(
         "   - Action Plan: 5-7 specific recommendations to enhance Levi’s promotions.\n"
         "   - Key Metrics: Core data points (avg prices, promo freqs, discount depths) woven into the narrative."
     ),
-    output_file="competitor_analysis.md"
+    output_file=analysis_output_file
 )
 
 report_task = Task(
     description=(
-        "Take the analysis from 'competitor_analysis.md' and craft a polished, professional email body that will be sent to Levi's data analysts and staff:\n"
+        f"Take the analysis from '{analysis_output_file}' and craft a polished, professional email body that will be sent to Levi's data analysts and staff:\n"
         "1. Summarize key findings—distill Levi’s promotion performance, competitor threats, and top opportunities into a concise 2-3 sentence overview.\n"
         "2. Highlight top 3 actions—pull the most impactful recommendations from the analysis, formatted as clear, numbered steps.\n"
         "3. Include the full analysis—append the entire Markdown content below a separator for reference.\n"
