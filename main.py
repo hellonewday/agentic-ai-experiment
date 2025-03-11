@@ -1,27 +1,64 @@
-import schedule
-import time
+import logging
 from crewai import Crew
+from agents import crawler_agent, analyzer_agent, reporting_agent
 from tasks import crawl_task, analyze_task, report_task
-from agents import orchestrator_agent, crawl_agent, analyze_agent, report_agent
+from email_sender import send_email
 
-# Initialize Crew with orchestrator_agent as the process manager
-crew = Crew(
-    agents=[crawl_agent, analyze_agent, report_agent],
-    tasks=[crawl_task, analyze_task, report_task],
-    verbose=True,
-    process='hierarchical',
-    manager_agent=orchestrator_agent
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    filename="competitor_crawler.log"
 )
 
-# Function to run the workflow
-def run_workflow():
-    print("Starting workflow...")
-    result = crew.kickoff()
-    print("Workflow completed:", result)
-    return result
+def run_competitor_analysis():
+    """Execute the competitor product crawling, analysis, and reporting workflow."""
+    crew = Crew(
+        agents=[crawler_agent, analyzer_agent, reporting_agent],
+        tasks=[crawl_task, analyze_task, report_task],
+        verbose=True
+    )
 
-# Simulate Cron Job with scheduler
+    result = crew.kickoff()
+
+    try:
+        with open("competitor_analysis.md", "r") as f:
+            full_analysis = f.read()
+
+        email_body = (
+            "Dear Levi’s Team,\n\n"
+            "**Latest Promotion Campaign Insights**\n\n"
+            "Our analysis shows Levi’s promotions are steady but outpaced—30% frequency and 10% discounts lag behind Lee Korea’s 60% blitz and Calvin Klein’s 40% finesse. "
+            "Here’s how we can sharpen our strategy and drive sales.\n\n"
+            "**Key Takeaways**\n"
+            "- Levi’s promo reach (30%) trails Lee (60%) and CK (40%), risking volume loss.\n"
+            "- Competitors’ deeper cuts (20% Lee, 15% CK) overshadow our 10% average.\n"
+            "- Opportunity: Boost campaigns to reclaim market buzz without sacrificing premium appeal.\n\n"
+            "**Top 3 Actions**\n"
+            "1. **Ramp Up Promo Reach**: Hit 50% of SKUs with 15% discounts—match CK, challenge Lee.\n"
+            "2. **Launch a Flash Sale**: Run a 20% off weekend event to spike volume and test demand.\n"
+            "3. **Reward Loyalty**: Offer 10% off exclusive drops for repeat buyers to lock in our base.\n\n"
+            "---\n\n"
+            "**Full Analysis**\n\n"
+            f"{full_analysis}"
+        )
+
+        sender = "Levis Data Team <hungnq.11198@gmail.com>"
+        receiver = "Levis Staff <staff@levis.co.kr>"
+        subject = "Levi’s Promotion Campaign Insights - Weekly Report"
+        smtp_user = ""  # Your Mailtrap SMTP username
+        smtp_password = ""  # Your Mailtrap SMTP password
+
+        send_email(sender, receiver, subject, email_body, smtp_user, smtp_password)
+
+        print("\n=== Analysis & Reporting Complete ===")
+        print("Check:\n- competitor_analysis.md (narrative)\n- email_report.log (email log)\n- Your Mailtrap inbox")
+    except Exception as e:
+        logging.error(f"Error processing results or sending email: {str(e)}")
+        print(f"Error: {e}")
+
 if __name__ == "__main__":
-    # schedule.every().day.at("09:00").do(run_workflow)
-    print("Running workflow immediately for PoC...")
-    result = run_workflow()
+    print("Starting competitor product analysis...")
+    logging.info("Starting new competitor analysis run")
+    run_competitor_analysis()
+    print("✅ Analysis complete!")

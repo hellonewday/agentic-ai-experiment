@@ -8,7 +8,10 @@ from urllib.request import Request, urlopen
 import re
 import pandas as pd
 from typing import List, Dict
-from mail import send_email
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from markdown2 import markdown
+import smtplib
 
 logging.basicConfig(
     level=logging.INFO,
@@ -137,15 +140,6 @@ class CompetitorCrawler(BaseTool):
         return all_products
 
 # Define Agents
-
-orchestrator_agent = Agent(
-    role="Workflow Orchestrator",
-    goal="Coordinate and optimize the end-to-end competitor analysis workflow",
-    backstory="Senior project manager with expertise in data operations and workflow optimization. Ensures smooth execution and handles any issues between crawling, analysis, and reporting stages.",
-    verbose=True,
-    llm=llm
-)
-
 crawler_agent = Agent(
     role="Web Crawler",
     goal="Extract and clean product information from Levi's Korea, Lee Korea, and Calvin Klein Korea websites",
@@ -157,7 +151,7 @@ crawler_agent = Agent(
 
 analyzer_agent = Agent(
     role="Data Analyst",
-    goal="Analyze Levi's denim promotion campaigns against competitors to deliver actionable insights for sales managers and data leads",
+    goal="Analyze Levi's denim promotion campaigns against competitors using crawled data to deliver actionable insights",
     backstory="Insightful analyst skilled at dissecting data to craft compelling, actionable narratives for sales and strategy teams",
     verbose=True,
     llm=llm
@@ -200,12 +194,13 @@ analyze_task = Task(
         "   - Risks Ahead: Where competitors are outshining us.\n"
         "   - Action Plan: 5-7 specific recommendations to enhance Levi’s promotions.\n"
         "   - Key Metrics: Core data points (avg prices, promo freqs, discount depths) woven into the narrative."
-    )
+    ),
+    output_file="competitor_analysis.md"
 )
 
 report_task = Task(
     description=(
-        "Take the analysis from 'competitor_analysis.md' and craft a polished, professional email report for Levi’s staff (sales managers, data analysts, and marketing team):\n"
+        "Take the analysis from 'competitor_analysis.md' and craft a polished, professional email body that will be sent to Levi's data analysts and staff:\n"
         "1. Summarize key findings—distill Levi’s promotion performance, competitor threats, and top opportunities into a concise 2-3 sentence overview.\n"
         "2. Highlight top 3 actions—pull the most impactful recommendations from the analysis, formatted as clear, numbered steps.\n"
         "3. Include the full analysis—append the entire Markdown content below a separator for reference.\n"
@@ -222,48 +217,68 @@ def run_competitor_analysis():
     crew = Crew(
         agents=[crawler_agent, analyzer_agent, reporting_agent],
         tasks=[crawl_task, analyze_task, report_task],
-        verbose=True,
-        process='hierarchical',
-        manager_agent=orchestrator_agent
+        verbose=True
     )
 
     result = crew.kickoff()
 
     try:
-        
-        if isinstance(result, str):
-            # Save Markdown analysis
-            with open("competitor_analysis.md", "w") as f:
-                f.write(result.strip())
-            logging.info("Saved narrative to competitor_analysis.md")
+        with open("competitor_analysis.md", "r") as f:
+            full_analysis = f.read()
 
-            email_body = (
-                "Dear Levi’s Team,\n\n"
-                "**Latest Promotion Campaign Insights**\n\n"
-                "Our analysis shows Levi’s promotions are steady but outpaced—30% frequency and 10% discounts lag behind Lee Korea’s 60% blitz and Calvin Klein’s 40% finesse. "
-                "Here’s how we can sharpen our strategy and drive sales.\n\n"
-                "**Key Takeaways**\n"
-                "- Levi’s promo reach (30%) trails Lee (60%) and CK (40%), risking volume loss.\n"
-                "- Competitors’ deeper cuts (20% Lee, 15% CK) overshadow our 10% average.\n"
-                "- Opportunity: Boost campaigns to reclaim market buzz without sacrificing premium appeal.\n\n"
-                "**Top 3 Actions**\n"
-                "1. **Ramp Up Promo Reach**: Hit 50% of SKUs with 15% discounts—match CK, challenge Lee.\n"
-                "2. **Launch a Flash Sale**: Run a 20% off weekend event to spike volume and test demand.\n"
-                "3. **Reward Loyalty**: Offer 10% off exclusive drops for repeat buyers to lock in our base.\n\n"
-                "---\n\n"
-                "**Full Analysis**\n\n"
-                f"{result.strip()}"
-            )
+        email_body = (
+            "Dear Levi’s Team,\n\n"
+            "**Latest Promotion Campaign Insights**\n\n"
+            "Our analysis shows Levi’s promotions are steady but outpaced—30% frequency and 10% discounts lag behind Lee Korea’s 60% blitz and Calvin Klein’s 40% finesse. "
+            "Here’s how we can sharpen our strategy and drive sales.\n\n"
+            "**Key Takeaways**\n"
+            "- Levi’s promo reach (30%) trails Lee (60%) and CK (40%), risking volume loss.\n"
+            "- Competitors’ deeper cuts (20% Lee, 15% CK) overshadow our 10% average.\n"
+            "- Opportunity: Boost campaigns to reclaim market buzz without sacrificing premium appeal.\n\n"
+            "**Top 3 Actions**\n"
+            "1. **Ramp Up Promo Reach**: Hit 50% of SKUs with 15% discounts—match CK, challenge Lee.\n"
+            "2. **Launch a Flash Sale**: Run a 20% off weekend event to spike volume and test demand.\n"
+            "3. **Reward Loyalty**: Offer 10% off exclusive drops for repeat buyers to lock in our base.\n\n"
+            "---\n\n"
+            "**Full Analysis**\n\n"
+            f"{full_analysis}"
+        )
 
-            sender = "Levis Data Team <hungnq.11198@gmail.com>"
-            receiver = "Levis Staff <staff@levis.co.kr>"
-            subject = "Levi’s Promotion Campaign Insights - Weekly Report"
-            send_email(sender, receiver, subject, email_body)
+        sender = "Levis Data Team <hungnq.11198@gmail.com>"
+        receiver = "Levis Staff <staff@levis.co.kr>"
+        subject = "Levi’s Promotion Campaign Insights - Weekly Report"
+        try:
+            logging.info("Converting Markdown content to HTML")
+            html_content = markdown(email_body)
+                
+            logging.info("Creating email message")
+            msg = MIMEMultipart("alternative")
+            msg["Subject"] = subject
+            msg["From"] = sender
+            msg["To"] = receiver
+                
+            msg.attach(MIMEText(email_body, "plain"))
+            msg.attach(MIMEText(html_content, "html"))
+                
+            smtp_server = "sandbox.smtp.mailtrap.io"
+            smtp_port = 2525
+            smtp_user = "07e58258e03ad3"
+            smtp_password = "28bb032eaf39f5"
+                
+            logging.info("Connecting to SMTP server")
+            with smtplib.SMTP(smtp_server, smtp_port) as server:
+                server.starttls()
+                logging.info("Logging in to SMTP server")
+                server.login(smtp_user, smtp_password)
+                    
+                logging.info("Sending email to %s", receiver)
+                server.sendmail(sender, receiver, msg.as_string())
+                
+            logging.info("Email sent successfully")
+        except Exception as e:
+            print(f"Failed to send email: {e}")
+            logging.error("Failed to send email: %s", str(e))
 
-        else:
-            logging.warning("Result format unexpected, saving raw output")
-            with open("competitor_analysis_raw.md", "w") as f:
-                f.write(str(result))
 
         print("\n=== Analysis & Reporting Complete ===")
         print("Check:\n- competitor_analysis.md (narrative)\n- email_report.log (email log)\n- Your Mailtrap inbox (if using testing SMTP) or real inbox (if using production SMTP)")
