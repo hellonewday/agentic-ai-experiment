@@ -15,9 +15,13 @@ if not os.path.exists(REPORT_DIR):
 report_files = [f for f in os.listdir(REPORT_DIR) if f.endswith(".md")]
 report_dates = [datetime.strptime(f.split("_")[2] + "_" + f.split("_")[3].replace(".md", ""), "%Y%m%d_%H%M%S") for f in report_files]
 
+
 min_date = min(report_dates) if report_dates else datetime.now()
 max_date = max(report_dates) if report_dates else datetime.now()
 date_range = st.sidebar.date_input("Filter by Date", [min_date, max_date], min_value=min_date, max_value=max_date)
+
+if len(date_range) < 2 or date_range[1] is None:
+    date_range = [date_range[0], date_range[0]]
 
 filtered_reports = [
     f for f, d in zip(report_files, report_dates)
