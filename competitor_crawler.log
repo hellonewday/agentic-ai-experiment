@@ -1,0 +1,18 @@
+2025-03-13 21:15:15,712 - INFO - Starting new competitor analysis run
+2025-03-13 21:15:16,066 - INFO - 
+LiteLLM completion() model= gpt-3.5-turbo; provider = openai
+2025-03-13 21:15:17,554 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-03-13 21:15:17,554 - INFO - Retrying request to /chat/completions in 0.422172 seconds
+2025-03-13 21:15:18,288 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-03-13 21:15:18,288 - INFO - Retrying request to /chat/completions in 0.867157 seconds
+2025-03-13 21:15:19,461 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-03-13 21:15:19,574 - ERROR - LiteLLM call failed: litellm.RateLimitError: RateLimitError: OpenAIException - Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2025-03-13 21:17:01,643 - INFO - Starting new competitor analysis run
+2025-03-13 21:17:01,671 - INFO - 
+LiteLLM completion() model= gpt-3.5-turbo; provider = openai
+2025-03-13 21:17:02,745 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-03-13 21:17:02,746 - INFO - Retrying request to /chat/completions in 0.475210 seconds
+2025-03-13 21:17:03,528 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-03-13 21:17:03,529 - INFO - Retrying request to /chat/completions in 0.828503 seconds
+2025-03-13 21:17:04,666 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-03-13 21:17:04,676 - ERROR - LiteLLM call failed: litellm.RateLimitError: RateLimitError: OpenAIException - Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}

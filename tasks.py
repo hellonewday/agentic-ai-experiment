@@ -1,14 +1,11 @@
-# tasks.py
 from crewai import Task
 from agents import crawler_agent, analyzer_agent, reporting_agent
 from datetime import datetime
 import os
 
-# Ensure reports directory exists
 if not os.path.exists("reports"):
     os.makedirs("reports")
 
-# Generate unique filename with timestamp
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 analysis_output_file = f"reports/competitor_analysis_{timestamp}.md"
 
@@ -20,40 +17,45 @@ crawl_task = Task(
 
 analyze_task = Task(
     description=(
-        "Analyze the cleaned product data from Levi's Korea, Lee Korea, and Calvin Klein Korea to evaluate Levi’s denim promotion campaigns against competitors, delivering a compelling narrative for sales managers and data analyst leads:\n"
-        "1. Crunch the numbers—compute average prices, price ranges, and promotion frequencies (percentage of products discounted) per brand to benchmark Levi’s position.\n"
-        "2. Uncover pricing trends—assess where Levi’s sits (premium, mid-tier, budget) relative to Lee and Calvin Klein, highlighting competitive gaps.\n"
-        "3. Evaluate promotion effectiveness—analyze the frequency, depth (average discount percentage), and spread of promotions across each brand’s catalog to gauge impact on sales potential.\n"
-        "4. Reveal campaign strengths—identify what Levi’s is doing right in its promotions and where it lags behind competitors.\n"
-        "5. Expose vulnerabilities—pinpoint where Lee and Calvin Klein’s promotion strategies threaten Levi’s market share, backed by data.\n"
-        "6. Tell a story—weave these findings into a smooth, engaging narrative that flows logically, blending hard data with actionable insights in a way that resonates with sales and analytics teams.\n"
-        "7. Propose strategies—offer 5-7 precise, data-backed recommendations to optimize Levi’s promotion campaigns and boost sales performance.\n"
-        "Write in a polished, persuasive tone—analytical yet accessible, like a seasoned analyst briefing the team. Ground every insight in the data (e.g., ‘Levi’s 30% promo frequency vs. Lee’s 60%’), making the story both credible and compelling."
+        "Analyze the cleaned product data from Levi's Korea, Lee Korea, and Calvin Klein Korea to evaluate Levi’s denim promotion campaigns against competitors, focusing on data-driven insights:\n"
+        "1. Compute the following metrics for each brand (Levi’s, Lee, Calvin Klein):\n"
+        "   - Average price of products.\n"
+        "   - Price range (minimum and maximum prices).\n"
+        "   - Promotion frequency (percentage of products with any promotion).\n"
+        "   - Average discount depth (average percentage discount for promoted products).\n"
+        "2. Present these metrics in a clear Markdown table for each brand.\n"
+        "3. Provide data-driven insights by comparing Levi’s metrics to Lee and Calvin Klein, focusing on:\n"
+        "   - Price positioning (e.g., is Levi’s premium, mid-tier, or budget compared to competitors?).\n"
+        "   - Promotion aggressiveness (e.g., does Levi’s offer more or fewer promotions, and are discounts deeper or shallower?).\n"
+        "   - Competitive gaps (e.g., where does Levi’s lag or lead in pricing or promotions?).\n"
+        "4. Propose 3-5 concise, data-backed recommendations to improve Levi’s promotion campaigns, directly tied to the metrics (e.g., 'Increase promotion frequency to match Lee’s 60% to capture more budget-conscious customers').\n"
+        "Write in a concise, analytical tone, prioritizing clarity and precision over narrative flair. Ensure all insights and recommendations are grounded in the computed metrics."
     ),
     agent=analyzer_agent,
     expected_output=(
         f"A Markdown file ('{analysis_output_file}') with:\n"
-        "   - Executive Summary: 3-4 sentences framing Levi’s promotion landscape with urgency.\n"
-        "   - Pricing Snapshot: Data-driven overview of price positioning.\n"
-        "   - Promotion Breakdown: Detailed analysis of campaign frequency and depth.\n"
-        "   - Competitive Edge: Levi’s strengths and weaknesses vs. rivals.\n"
-        "   - Risks Ahead: Where competitors are outshining us.\n"
-        "   - Action Plan: 5-7 specific recommendations to enhance Levi’s promotions.\n"
-        "   - Key Metrics: Core data points (avg prices, promo freqs, discount depths) woven into the narrative."
+        "   - **Summary Table**: A table showing average price, price range, promotion frequency, and average discount depth for Levi’s, Lee, and Calvin Klein.\n"
+        "   - **Insights**: 3-4 sentences comparing Levi’s metrics to competitors, focusing on price positioning, promotion aggressiveness, and competitive gaps.\n"
+        "   - **Recommendations**: 3-5 numbered recommendations to improve Levi’s promotion campaigns, each backed by specific data from the table.\n"
+        "   - Ensure all insights and recommendations are directly tied to the data in the table, avoiding vague or speculative statements."
     ),
     output_file=analysis_output_file
 )
 
 report_task = Task(
     description=(
-        f"Take the analysis from '{analysis_output_file}' and craft a polished, professional email body that will be sent to Levi's data analysts and staff:\n"
-        "1. Summarize key findings—distill Levi’s promotion performance, competitor threats, and top opportunities into a concise 2-3 sentence overview.\n"
-        "2. Highlight top 3 actions—pull the most impactful recommendations from the analysis, formatted as clear, numbered steps.\n"
-        "3. Include the full analysis—append the entire Markdown content below a separator for reference.\n"
-        "Write in a clean, action-oriented tone with a professional yet engaging layout (e.g., bold headers, bullet points). Send the email via Mailtrap SMTP using provided credentials, and log the action in 'email_report.log'."
+        f"Take the analysis from '{analysis_output_file}' and craft a concise, professional email body for Levi's data analysts and staff:\n"
+        "1. Extract the summary table (average price, price range, promotion frequency, average discount depth) and include it in the email body as a Markdown table.\n"
+        "2. Highlight the top 3 recommendations from the analysis, formatted as a numbered list.\n"
+        "3. Append the entire Markdown content from '{analysis_output_file}' below a separator (e.g., '--- Full Analysis ---').\n"
+        "Write in a concise, professional tone, focusing on the data and actionable steps. Send the email via Mailtrap SMTP using provided credentials, and log the action in 'email_report.log'."
     ),
     agent=reporting_agent,
     expected_output=(
-        "A nice-looking email that shows formatted summary, top 3 actions, and full analysis to sales_team@levi.kr, analytics_team@levi.kr, marketing_team@levi.kr with subject 'Levi’s Promotion Campaign Insights - Weekly Report'"
+        "A professional email sent to sales_team@levi.kr, analytics_team@levi.kr, marketing_team@levi.kr with subject 'Levi’s Promotion Campaign Insights - Weekly Report', containing:\n"
+        "   - A brief introduction (1-2 sentences) stating the purpose of the report.\n"
+        "   - A Markdown table summarizing the key metrics (average price, price range, promotion frequency, average discount depth) for Levi’s, Lee, and Calvin Klein.\n"
+        "   - A numbered list of the top 3 recommendations.\n"
+        "   - The full analysis appended below a separator."
     )
 )
