@@ -34,7 +34,7 @@ st.markdown("Analyze competitor pricing and promotions with a single click!")
 
 if st.button("Run Competitor Analysis"):
     st.empty()
-    expander = st.expander("Processing Log", expanded=True)
+    expander = st.expander("Processing Log", expanded=True, icon="🖥️")
     with st.spinner("Running analysis..."):
         original_stdout = sys.stdout
         stream_to_expander = StreamToExpander(expander, st)
