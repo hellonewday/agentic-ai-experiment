@@ -123,6 +123,6 @@ class StreamToExpander:
                 json_data = json.loads(text)
                 pretty_json = json.dumps(json_data, indent=2, ensure_ascii=False)
                 return f'<pre style="margin: 0; padding: 5px; background-color: #f5f5f5; border-radius: 4px;">{pretty_json}</pre>'
-            return text
+            return 'All data fetched!'
         except json.JSONDecodeError:
-            return text
+            return 'All data fetched!'

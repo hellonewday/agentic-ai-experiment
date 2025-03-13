@@ -7,8 +7,10 @@ import markdown
 def send_email(sender: str, receiver: str, subject: str, content: str, smtp_user: str, smtp_password: str):
     try:
         logging.info("Converting Markdown content to HTML")
-        html_content = markdown.markdown(content, extensions=['markdown.extensions.tables'])
+        # Add 'extra' extension to handle numbered lists properly
+        html_content = markdown.markdown(content, extensions=['markdown.extensions.tables', 'markdown.extensions.extra', 'markdown.extensions.nl2br'])
 
+        # Wrap the HTML content in a styled template with the logo and confidentiality warning
         styled_html = f"""
         <!DOCTYPE html>
         <html lang="en">
@@ -30,6 +32,12 @@ def send_email(sender: str, receiver: str, subject: str, content: str, smtp_user
                     padding: 20px;
                     border-radius: 8px;
                     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                }}
+                .logo {{
+                    display: block;
+                    margin: 0 auto 20px auto;
+                    width: 150px;
+                    height: auto;
                 }}
                 h3 {{
                     color: #2c3e50;
@@ -60,6 +68,9 @@ def send_email(sender: str, receiver: str, subject: str, content: str, smtp_user
                     line-height: 1.6;
                     margin: 10px 0;
                 }}
+                ol {{
+                    padding-left: 20px;
+                }}
                 .separator {{
                     margin: 20px 0;
                     border-top: 1px solid #ddd;
@@ -67,11 +78,24 @@ def send_email(sender: str, receiver: str, subject: str, content: str, smtp_user
                     font-style: italic;
                     color: #666;
                 }}
+                .confidentiality {{
+                    margin-top: 30px;
+                    padding: 10px;
+                    border-top: 2px solid #e74c3c;
+                    font-size: 12px;
+                    color: #e74c3c;
+                    text-align: center;
+                    font-style: italic;
+                }}
             </style>
         </head>
         <body>
             <div class="email-container">
+                <img src="https://www.pngplay.com/wp-content/uploads/13/Levis-Transparent-File.png" alt="Levi's Logo" class="logo">
                 {html_content}
+                <div class="confidentiality">
+                    <p>CONFIDENTIAL: This email contains proprietary information intended solely for the recipients listed. Unauthorized distribution or disclosure is prohibited.</p>
+                </div>
             </div>
         </body>
         </html>

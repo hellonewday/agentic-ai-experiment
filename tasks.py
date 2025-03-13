@@ -47,7 +47,7 @@ report_task = Task(
     description=(
         f"Take the analysis from '{analysis_output_file}' and craft a concise, professional email body for Levi's data analysts and staff:\n"
         "1. Extract the summary table (average price, price range, promotion frequency, average discount depth) and include it in the email body as a Markdown table.\n"
-        "2. Highlight the top 3 recommendations from the analysis, formatted as a numbered list.\n"
+        "2. Highlight the top 3 recommendations from the analysis, formatted as a numbered list in Markdown (e.g., '1. Recommendation text'). Ensure there is a space after the number and period (e.g., '1. ').\n"
         "3. Append the entire Markdown content from '{analysis_output_file}' below a separator (e.g., '--- Full Analysis ---').\n"
         "4. Add inline CSS styling to ensure the email looks polished:\n"
         "   - Wrap the content in a `<div>` with a max-width of 600px, centered, and a clean font (e.g., Arial).\n"
@@ -61,7 +61,7 @@ report_task = Task(
         "   - A `<style>` tag with CSS for the table (borders, padding, alternating rows), text (Arial font), and layout (centered, max-width 600px).\n"
         "   - A brief introduction (1-2 sentences) stating the purpose of the report.\n"
         "   - A Markdown table summarizing the key metrics (average price, price range, promotion frequency, average discount depth) for Levi’s, Lee, and Calvin Klein.\n"
-        "   - A numbered list of the top 3 recommendations.\n"
+        "   - A numbered list of the top 3 recommendations, properly formatted for Markdown-to-HTML conversion.\n"
         "   - The full analysis appended below a separator."
     )
 )
