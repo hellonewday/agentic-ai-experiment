@@ -26,3 +26,9 @@ Xem giao diện ở `localhost:8501`
 `python3 main.py`
 
 7. Test kết quả ở thư mục `/reports` hoặc xem trên Mailtrap.
+
+8. Build docker: 
+`docker build -t <image_name>:<image_version> . `
+
+9. Chạy docker:
+`sudo docker run --env-file .env  -it -d -p 8501:8501 <image_name>:<image_version>`
