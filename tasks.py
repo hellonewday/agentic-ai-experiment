@@ -17,27 +17,32 @@ crawl_task = Task(
 
 analyze_task = Task(
     description=(
-        "Analyze the cleaned product data from Levi's Korea, Lee Korea, and Calvin Klein Korea to evaluate Levi’s denim promotion campaigns against competitors, focusing on data-driven insights:\n"
+        "Analyze the cleaned product data from Levi's Korea, Lee Korea, and Calvin Klein Korea to evaluate Levi’s denim promotion campaigns against competitors, delivering a compelling, data-driven narrative for sales managers and data analyst leads:\n"
         "1. Compute the following metrics for each brand (Levi’s, Lee, Calvin Klein):\n"
         "   - Average price of products.\n"
         "   - Price range (minimum and maximum prices).\n"
         "   - Promotion frequency (percentage of products with any promotion).\n"
         "   - Average discount depth (average percentage discount for promoted products).\n"
         "2. Present these metrics in a clear Markdown table (no code block wrapping).\n"
-        "3. Provide data-driven insights by comparing Levi’s metrics to Lee and Calvin Klein, focusing on:\n"
-        "   - Price positioning (e.g., is Levi’s premium, mid-tier, or budget compared to competitors?).\n"
-        "   - Promotion aggressiveness (e.g., does Levi’s offer more or fewer promotions, and are discounts deeper or shallower?).\n"
-        "   - Competitive gaps (e.g., where does Levi’s lag or lead in pricing or promotions?).\n"
-        "   Output 3-4 concise sentences directly as Markdown text.\n"
-        "4. Propose 3-5 concise, data-backed recommendations to improve Levi’s promotion campaigns, directly tied to the metrics, formatted as a numbered list in Markdown.\n"
-        "Write in a concise, analytical tone, prioritizing clarity and precision. Ensure all output is raw Markdown (no ```markdown code blocks) and ready for direct rendering in a Markdown viewer."
+        "3. Uncover pricing trends—assess where Levi’s sits (premium, mid-tier, budget) relative to Lee and Calvin Klein, using the table data to highlight competitive gaps.\n"
+        "4. Evaluate promotion effectiveness—analyze the frequency, depth, and spread of promotions across each brand’s catalog, using the table to gauge impact on sales potential.\n"
+        "5. Reveal campaign strengths—identify what Levi’s is doing right in its promotions and where it lags behind competitors, grounded in the data.\n"
+        "6. Expose vulnerabilities—pinpoint where Lee and Calvin Klein’s promotion strategies threaten Levi’s market share, backed by the table metrics.\n"
+        "7. Propose 5-7 precise, data-backed recommendations to optimize Levi’s promotion campaigns, formatted as a numbered list in Markdown.\n"
+        "8. Weave these findings into a smooth, engaging narrative that flows logically, blending the table data with actionable insights in a way that resonates with sales and analytics teams.\n"
+        "Write in a polished, persuasive tone—analytical yet accessible, like a seasoned analyst briefing the team. Ground every insight in the table data (e.g., ‘Levi’s 20% promo frequency vs. Lee’s 60%’), ensuring the story is credible and compelling.\n"
+        "Ensure all output is raw Markdown (no ```markdown code blocks) and ready for direct rendering in a Markdown viewer."
     ),
     agent=analyzer_agent,
     expected_output=(
-        f"A Markdown file ('{analysis_output_file}') containing:\n"
-        "   - A table summarizing average price, price range, promotion frequency, and average discount depth for Levi’s, Lee, and Calvin Klein (no code block wrapping).\n"
-        "   - 3-4 sentences of insights comparing Levi’s metrics to competitors, written directly as Markdown text.\n"
-        "   - A numbered list of 3-5 recommendations, each backed by specific data from the table.\n"
+        f"A Markdown file ('{analysis_output_file}') with:\n"
+        "   - Executive Summary: 3-4 sentences framing Levi’s promotion landscape with urgency, grounded in the data.\n"
+        "   - Summary Table: A table summarizing average price, price range, promotion frequency, and average discount depth for Levi’s, Lee, and Calvin Klein.\n"
+        "   - Pricing Trends: A section analyzing Levi’s price positioning relative to competitors, using the table data.\n"
+        "   - Promotion Effectiveness: A section evaluating the impact of promotions, using the table metrics.\n"
+        "   - Competitive Edge: A section on Levi’s strengths and weaknesses vs. rivals, backed by data.\n"
+        "   - Risks Ahead: A section on where competitors are outshining Levi’s, with data support.\n"
+        "   - Action Plan: 5-7 specific recommendations to enhance Levi’s promotions, formatted as a numbered list.\n"
         "   Ensure the output is raw Markdown, suitable for direct rendering, with no introductory narrative or code block formatting."
     ),
     output_file=analysis_output_file
