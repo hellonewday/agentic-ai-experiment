@@ -1,7 +1,6 @@
 import re
 import streamlit as st
 from markdown import markdown
-from markdown_pdf import MarkdownPdf, Section
 import pdfkit
 import json
 
