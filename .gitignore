@@ -5,3 +5,4 @@ __pycache__
 cleaned_products.csv
 competitors_crawler.log
 /experiments/funnel-drop-off/*.json
+/test/data.csv
